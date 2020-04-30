@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% include 'messages.html' %}
+
+    <div class="card shadow mb-4">
+        {#        <div class="card-header py-3">#}
+        {#            <h6 class="m-0 font-weight-bold text-primary">Passport Information</h6>#}
+        {#        </div>#}
+        <div class="card-body">
+            <a href="{% url 'frontend:add_passport_view' %}" class="btn btn-primary margin-bottom-20"><span class="fa fa-plus"></span>Add</a>
+            <br>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Passport Number</th>
+                        <th>Fathers Name</th>
+                        <th>Mothers Name</th>
+                        <th>Address</th>
+                        <th>Gender</th>
+                        <th>Phone Number</th>
+                        <th>Emergency Contact Name</th>
+                        <th>Emergency Contact Address</th>
+                        <th>Emergency Contact Phone Number</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Passport Number</th>
+                        <th>Fathers Name</th>
+                        <th>Mothers Name</th>
+                        <th>Address</th>
+                        <th>Gender</th>
+                        <th>Phone Number</th>
+                        <th>Emergency Contact Name</th>
+                        <th>Emergency Contact Address</th>
+                        <th>Emergency Contact Phone Number</th>
+                        <th>Action</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for passport_info in passport_infos %}
+                            <tr>
+                                <td>{{ passport_info.name }}</td>
+                                <td>{{ passport_info.passport_number }}</td>
+                                <td>{{ passport_info.fathers_name }}</td>
+                                <td>{{ passport_info.mothers_name }}</td>
+                                <td>{{ passport_info.address }}</td>
+                                <td>{{ passport_info.get_gender_text }}</td>
+                                <td>{{ passport_info.phone_number }}</td>
+                                <td>{{ passport_info.emergency_contact_name }}</td>
+                                <td>{{ passport_info.emergency_contact_address }}</td>
+                                <td>{{ passport_info.emergency_contact_phone_number }}</td>
+                                <td>
+                                    <a href="{% url 'frontend:edit_passport_view' passport_info.id %}"
+                                       class="btn btn-primary"><span class="fa fa-edit"></span>Edit</a>
+                                    <a href="{% url 'frontend:delete_passport_view' passport_info.id %}"
+                                       class="btn btn-outline-danger"><span class="fa fa-trash-alt"></span>Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

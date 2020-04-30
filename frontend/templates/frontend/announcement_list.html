@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% include 'messages.html' %}
+
+    <div class="card shadow mb-4">
+        {#        <div class="card-header py-3">#}
+        {#            <h6 class="m-0 font-weight-bold text-primary">Announcement List</h6>#}
+        {#        </div>#}
+        <div class="card-body">
+            <a href="{% url 'frontend:add_announcement_view' %}" class="btn btn-primary margin-bottom-20"><span class="fa fa-plus"></span>Add</a>
+            <br>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Details</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Title</th>
+                        <th>Details</th>
+                        <th>Action</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for announcement in announcements %}
+                            <tr>
+                                <td>{{ announcement.title }}</td>
+                                <td>{{ announcement.details }}</td>
+                                <td>
+                                    <a href="{% url 'frontend:edit_announcement_view' announcement.id %}"
+                                       class="btn btn-primary"><span class="fa fa-edit"></span> Edit</a>
+                                    <a href="{% url 'frontend:delete_announcement_view' announcement.id %}"
+                                       class="btn btn-outline-danger"><span class="fa fa-trash-alt"></span>Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

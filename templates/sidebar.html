@@ -1,0 +1,62 @@
+{% load static %}
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'frontend:dashboard' %}">
+        <div class="sidebar-brand-text mx-3">
+            <img src="{% static 'images/InfoHub.png' %}" alt="" width="50%">
+        </div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item {{ dashboard }}">
+        <a class="nav-link " href="{% url 'frontend:dashboard' %}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ passport_list }}">
+        <a class="nav-link " href="{% url 'frontend:passport_list' %}">
+            <i class="fas fa-fw fa-passport"></i>
+            <span>Passport List</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ announcement_list }}">
+        <a class="nav-link " href="{% url 'frontend:announcement_list' %}">
+            <i class="fas fa-fw fa-microphone"></i>
+            <span>Announcement List</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ doctors_list }}">
+        <a class="nav-link " href="{% url 'frontend:doctors_list' %}">
+            <i class="fas fa-fw fa-medkit"></i>
+            <span>Doctors List</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ marked_places_list }}">
+        <a class="nav-link " href="{% url 'frontend:marked_places_list' %}">
+            <i class="fas fa-fw fa-map-marked"></i>
+            <span>Marked places list</span>
+        </a>
+    </li>
+
+
+    <li class="nav-item {{ read_csv }}">
+        <a class="nav-link " href="{% url 'frontend:read_csv' %}">
+            <i class="fas fa-fw fa-file-csv"></i>
+            <span>Read CSV</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+
+</ul>

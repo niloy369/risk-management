@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% include 'messages.html' %}
+
+    <div class="card shadow mb-4">
+        {#        <div class="card-header py-3">#}
+        {#            <h6 class="m-0 font-weight-bold text-primary">Doctors List</h6>#}
+        {#        </div>#}
+        <div class="card-body">
+            <a href="{% url 'frontend:add_marked_place_view' %}" class="btn btn-primary margin-bottom-20"><span
+                    class="fa fa-plus"></span>Add</a>
+            <br>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Latitude</th>
+                        <th>longitude</th>
+                        <th>Radius</th>
+                        <th>Marked as</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Title</th>
+                        <th>Latitude</th>
+                        <th>longitude</th>
+                        <th>Radius</th>
+                        <th>Marked as</th>
+                        <th>Action</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for marked_place in marked_places %}
+                        <tr>
+                            <td>{{ marked_place.title }}</td>
+                            <td>{{ marked_place.latitude }}</td>
+                            <td>{{ marked_place.longitude }}</td>
+                            <td>{{ marked_place.radius }}</td>
+                            <td>{{ marked_place.marked_as }}</td>
+                            <td>
+                                <a href="{% url 'frontend:edit_marked_place_view' marked_place.id %}"
+                                   class="btn btn-primary"><span
+                                        class="fa fa-edit"></span>Edit</a>
+                                <a href="{% url 'frontend:delete_marked_place_view' marked_place.id %}"
+                                   class="btn btn-outline-danger"><span class="fa fa-trash-alt"></span>Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% include 'messages.html' %}
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-bottom-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Passport
+                                Information
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ passport_infos.count }}</div>
+                        </div>
+                        {#                        <div class="col-auto">#}
+                        {#                            <i class="fas fa-calendar fa-2x text-gray-300"></i>#}
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-bottom-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Doctors Volunteered
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ doctors.count }}</div>
+                        </div>
+                        {#                        <div class="col-auto">#}
+                        {#                            <i class="fas fa-calendar fa-2x text-gray-300"></i>#}
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-bottom-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Total Infected Areas
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ infected_marked_places_count }}</div>
+                        </div>
+                        {#                        <div class="col-auto">#}
+                        {#                            <i class="fas fa-calendar fa-2x text-gray-300"></i>#}
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-bottom-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Community
+                                Transmission places
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ community_transmission_marked_places_count }}</div>
+                        </div>
+                        {#                        <div class="col-auto">#}
+                        {#                            <i class="fas fa-calendar fa-2x text-gray-300"></i>#}
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-bottom-secondary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Total Local
+                                Gathering places
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ local_gathering_marked_places_count }}</div>
+                        </div>
+                        {#                        <div class="col-auto">#}
+                        {#                            <i class="fas fa-calendar fa-2x text-gray-300"></i>#}
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="map" style="width: 100%; height: 700px;"></div>
+    </div>
+
+
+{% endblock %}
+
+{% block additional_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                url: 'http://{{ request.get_host }}/api/marked_place/',
+                success: function (data) {
+                    var locations = data;
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 10,
+                        center: new google.maps.LatLng(23.777176, 90.399452),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    });
+                    var infowindow = new google.maps.InfoWindow();
+                    var marker, i;
+                    for (i = 0; i < locations.length; i++) {
+                        let flag = '';
+                        let circle_color = '';
+                        if (locations[i].marked_as == 'INFECTED') {
+                            flag = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+                            circle_color = "{{marker_circle_color.INFECTED}}";
+                            console.log(circle_color);
+                        } else if (locations[i].marked_as == 'COMMUNITY_TRANSMISSION') {
+                            flag = 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png';
+                            circle_color = "{{marker_circle_color.COMMUNITY_TRANSMISSION}}";
+                            console.log(circle_color);
+                        } else {
+                            flag = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+                            circle_color = "{{marker_circle_color.LOCAL_GATHERING}}";
+                            console.log(circle_color);
+                        }
+                        // Create marker . . .
+                        marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(locations[i].latitude, locations[i].longitude),
+                            title: locations[i].title,
+                            icon: {
+                                url: flag
+                            },
+                            map: map
+                        });
+
+                        // Add circle overlay and bind to marker
+                        var circle = new google.maps.Circle({
+                            map: map,
+                            radius: locations[i].radius,
+                            fillColor: circle_color
+                        });
+                        circle.bindTo('center', marker, 'position');
+
+                        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                            return function () {
+                                infowindow.setContent(locations[i].title);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, i));
+                    }
+                }
+            })
+        });
+    </script>
+{% endblock %}
